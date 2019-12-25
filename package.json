@@ -10,8 +10,21 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@react-native-community/async-storage": "^1.7.1",
+    "galio-framework": "^0.6.3",
     "react": "16.9.0",
-    "react-native": "0.61.5"
+    "react-native": "0.61.5",
+    "react-native-gesture-handler": "^1.5.2",
+    "react-native-largelist-v3": "^3.0.15",
+    "react-native-reanimated": "^1.4.0",
+    "react-native-screens": "^2.0.0-alpha.22",
+    "react-native-shared-element": "^0.5.3",
+    "react-native-spring-scrollview": "^2.0.23",
+    "react-native-vector-icons": "^6.6.0",
+    "react-navigation": "^4.0.10",
+    "react-navigation-stack": "^1.10.3",
+    "realm": "^3.6.0",
+    "rn-placeholder": "^3.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.7.7",
