@@ -6,19 +6,17 @@
  * @flow
  */
 
-import React from 'react';
-import {SafeAreaView, StatusBar} from 'react-native';
-
+import React, {useEffect} from 'react';
 import AppNavigator from './src/navigators/appNavigator';
+import GalleryContextProvider from './src/context/GalleryContext';
+import SplashScreen from 'react-native-splash-screen';
 
 const App = () => {
+  useEffect(() => SplashScreen.hide());
   return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <AppNavigator />
-      </SafeAreaView>
-    </>
+    <GalleryContextProvider>
+      <AppNavigator />
+    </GalleryContextProvider>
   );
 };
 

@@ -1,42 +1,64 @@
 import React from 'react';
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
+import {createSharedElementStackNavigator} from 'react-navigation-shared-element';
 
 import HomeScreen from '../screens/Home';
-import GalleryHomeScreen from '../screens/GalleryHome';
-import GalleryPreviewScreen from '../screens/GalleryPreview';
+import GalleryHomeScreen, {GalleryFullImage} from '../screens/GalleryHome';
 import ContactListScreen from '../screens/ContactList';
-import ProfileInfoScreen from '../screens/ProfileInfo';
-import ProfilePhotosScreen from '../screens/ProfilePhotos';
+import ProfileScreen from '../screens/Profile';
+import {fromTop, fromBottom} from 'react-navigation-transitions';
 
-const GalleryStack = createStackNavigator({
-  GalleryHome: {
-    screen: GalleryHomeScreen,
-  },
-  GalleryPreview: {screen: GalleryPreviewScreen},
-});
+const handleCustomTransition = ({scenes}) => {
+  const prevScene = scenes[scenes.length - 2];
+  const nextScene = scenes[scenes.length - 1];
 
-const ContactStack = createStackNavigator({
-  ContactList: {screen: ContactListScreen},
-  ProfileInfo: {screen: ProfileInfoScreen},
-  ProfilePhotos: {screen: ProfilePhotosScreen},
-});
+  // Custom transitions go there
+  if (
+    prevScene &&
+    prevScene.route.routeName === 'Home' &&
+    nextScene.route.routeName === 'GalleryHome'
+  ) {
+    return fromTop(900);
+  } else if (
+    prevScene &&
+    prevScene.route.routeName === 'Home' &&
+    nextScene.route.routeName === 'ContactList'
+  ) {
+    return fromBottom(900);
+  }
+};
 
-const AppStack = createStackNavigator(
+const AppStack = createSharedElementStackNavigator(
+  createStackNavigator,
   {
     Home: {
       screen: HomeScreen,
     },
-    Contacts: {
-      screen: ContactStack,
-    },
     Gallery: {
-      screen: GalleryStack,
+      screen: GalleryHomeScreen,
     },
+    Contacts: {screen: ContactListScreen},
+    Profile: {screen: ProfileScreen},
   },
   {
     initialRouteName: 'Home',
+    defaultNavigationOptions: {
+      headerShown: false,
+    },
+    transitionConfig: nav => handleCustomTransition(nav),
+  },
+);
+const GalleryStack = createStackNavigator(
+  {
+    GalleryFullImage,
+    AppStack,
+  },
+  {
+    initialRouteName: 'AppStack',
+    mode: 'modal',
+    headerMode: 'none',
   },
 );
 
-export default createAppContainer(AppStack);
+export default createAppContainer(GalleryStack);
